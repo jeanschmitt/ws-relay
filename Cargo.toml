@@ -1,0 +1,17 @@
+[package]
+name = "ws-relay"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jean Schmitt <github@jeanschmitt.fr>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.21.2", features = ["full"] }
+tokio-stream = "0.1.11"
+futures-util = "0.3"
+uuid = { version = "1.2.2", features = ["v4", "fast-rng"] }
+rand = "^0.8"
+bytes = "1.2.1"
+warp = "0.3.3"
+thiserror = "^1.0"
