@@ -14,7 +14,7 @@ use warp::{ws, Filter};
 
 use crate::app;
 use crate::app::error::ProcessError;
-use crate::app::{App, Player};
+use crate::app::{App, Player, Room};
 
 const APPLICATION_JSON: HeaderValue = HeaderValue::from_static("application/json");
 
@@ -118,7 +118,9 @@ async fn list_players(app: Arc<RwLock<App>>) -> Result<warp::reply::Json, Infall
             app.read()
                 .await
                 .get_players()
-                .map(|player| async { format!("{}", player.read().await.get_session_id()) }),
+                .map(|player: &Arc<RwLock<Player>>| async {
+                    format!("{}", player.read().await.get_session_id())
+                }),
         )
         .await,
     ))
@@ -130,7 +132,9 @@ async fn list_rooms(app: Arc<RwLock<App>>) -> Result<warp::reply::Json, Infallib
             app.read()
                 .await
                 .get_rooms()
-                .map(|room| async { format!("{:?}", room.read().await.get_code()) }),
+                .map(|room: &Arc<RwLock<Room>>| async {
+                    format!("{}", room.read().await.get_code())
+                }),
         )
         .await,
     ))

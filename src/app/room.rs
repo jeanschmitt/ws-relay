@@ -5,7 +5,7 @@ use tokio::sync::RwLock;
 use uuid::Uuid;
 
 use crate::app::Player;
-use crate::code::{new_code, Code};
+use crate::code::Code;
 use crate::proto::s2c;
 
 pub struct Room {
@@ -20,7 +20,7 @@ impl Room {
         let host = Arc::downgrade(host);
 
         Self {
-            code: new_code(),
+            code: Code::new(),
             host: host.clone(),
             players: HashMap::from([(host_id, host)]),
         }

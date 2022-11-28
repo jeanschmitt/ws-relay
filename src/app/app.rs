@@ -80,7 +80,7 @@ impl App {
 
         self.rooms.insert(code, room);
 
-        println!("Room {:X?} created", &code);
+        println!("Room {} created", &code);
 
         Ok(())
     }

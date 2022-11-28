@@ -59,7 +59,7 @@ impl Player {
         .await?;
 
         println!(
-            "Player {} joined room {:#02x?}",
+            "Player {} joined room {}",
             self.get_session_id(),
             room.read().await.get_code()
         );
