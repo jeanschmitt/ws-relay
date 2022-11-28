@@ -53,12 +53,45 @@ impl App {
     }
 
     pub async fn remove_player(&mut self, session_id: &Uuid) -> Result<(), ProcessError> {
-        // TODO: remove from Room, auto delete room etc
-        self.players.remove(session_id);
+        match self.players.get(session_id) {
+            Some(player) => {
+                // Delete the room if he is a host
+                let room_to_remove = {
+                    let player = player.read().await;
 
-        println!("Player {} left", session_id);
+                    match player.get_room() {
+                        Some(room) => {
+                            let room = room.read().await;
+                            if room.get_host().read().await.get_session_id()
+                                == player.get_session_id()
+                            {
+                                Some(*room.get_code())
+                            } else {
+                                None
+                            }
+                        }
+                        None => None,
+                    }
+                };
 
-        Ok(())
+                if let Some(code) = room_to_remove {
+                    self.remove_room(&code);
+                }
+
+                self.players.remove(session_id);
+
+                println!("Player {} left", session_id);
+
+                Ok(())
+            }
+            None => Err(ProcessError::PlayerNotFound),
+        }
+    }
+
+    pub fn remove_room(&mut self, code: &Code) {
+        self.rooms.remove(code);
+
+        println!("Room {} removed", code);
     }
 
     pub async fn create_room(&mut self, host: &Arc<RwLock<Player>>) -> Result<(), ProcessError> {

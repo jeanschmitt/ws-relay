@@ -13,8 +13,8 @@ pub enum ProcessError {
     InvalidOperation,
     #[error("not in room")]
     NotInRoom,
-    #[error("receiver not in room")]
-    ReceiverNotInRoom,
+    #[error("player not found")]
+    PlayerNotFound,
     #[error("room not found")]
     RoomNotFound,
 }

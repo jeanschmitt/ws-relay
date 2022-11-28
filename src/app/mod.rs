@@ -29,7 +29,7 @@ pub async fn process_message(
             let receiver = match sender.get_room() {
                 Some(room) => match room.read().await.get_player(&fwd.session_id) {
                     Some(player) => player,
-                    None => return Err(ProcessError::ReceiverNotInRoom),
+                    None => return Err(ProcessError::PlayerNotFound),
                 },
                 None => return Err(ProcessError::NotInRoom),
             };
